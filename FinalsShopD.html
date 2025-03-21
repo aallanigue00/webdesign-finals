@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - Janeth's Preloved Collection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #FFFFFF;
+            color: #E37383;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styling */
+      
+
+        .navbar-brand {
+            font-size: 30px;
+            font-weight: bold;
+			padding: 0;
+            color: white;
+			
+        }
+
+	nav a { 
+		text-decoration: none;
+		color: #8b0000; 
+		font-weight: bold; 
+		margin: 0 15px; 
+		font-size: 20px; 
+	}	
+
+        .nav-link {
+            color: #E37383;
+            margin: 0;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #ffcccc;
+        }
+
+        /* Product Grid */
+.container {
+    padding: 10px;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
+
+/* Adjust width dynamically to fit more products per row */
+.product {
+    flex: 1 1 calc(20% - 30px); /* Each product takes up about 20% of the row */
+    max-width: 250px; /* Prevents products from getting too wide */
+    min-width: 250px; /* Ensures a reasonable minimum size */
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #E37383;
+    border-radius: 5px;
+    padding: 10px;
+    transition: transform 0.3s ease;
+    background: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .product {
+        flex: 1 1 calc(25% - 30px); /* 4 products per row on medium screens */
+    }
+}
+
+@media (max-width: 992px) {
+    .product {
+        flex: 1 1 calc(33.33% - 30px); /* 3 products per row on tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .product {
+        flex: 1 1 calc(50% - 30px); /* 2 products per row on smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .product {
+        flex: 1 1 100%; /* 1 product per row on very small screens */
+    }
+}
+
+
+        .product:hover {
+            transform: scale(1.05);
+        }
+
+        .product img {
+            width: 100%;
+            height: 290px;
+            border-radius: 5px;
+        }
+
+        .product p {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #8b0000;
+        }
+		
+		footer { 
+			text-align: center; 
+			padding: 15px; 
+			background: #fce4ec; 
+			border-top: 3px solid gold;
+		}	
+	
+
+        /* Pop-up Modal */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+            margin: 10% auto;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            border: 3px solid #E37383;
+        }
+
+        .popup-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .popup-content h3 {
+            color: #E37383;
+        }
+
+        .popup-content p {
+            color: #8b0000;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 20px;
+            font-size: 50px;
+            cursor: pointer;
+            color: #FFFFFF;
+            font-weight: bold;
+        }
+		
+		/* Notification Pop-up */
+		.cart-notification {
+			position: fixed;
+			top: 20px;
+			right: 20px;
+			background: #fff9fc; /* Soft pink-white */
+			border: 2px solid #e6b3c7; /* Light pink border */
+			color: #444;
+			font-family: 'Lora', sans-serif;
+			font-size: 16px;
+			padding: 12px 18px;
+			border-radius: 8px;
+			box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+			display: none;
+			z-index: 1000;
+			animation: fadeInOut 3s ease-in-out;
+		}
+
+		/* Fade-in & Fade-out Animation */
+		@keyframes fadeInOut {
+			0% { opacity: 0; transform: translateY(-10px); }
+			10% { opacity: 1; transform: translateY(0); }
+			90% { opacity: 1; transform: translateY(0); }
+			100% { opacity: 0; transform: translateY(-10px); }
+		}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar (Copy from Homepage) -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-white">
+		<div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#" style="color: #E37383;">
+    <img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/274371537_121720373755216_2328404898260772889_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=-S-rO0m9TrcQ7kNvgGV-jVN&_nc_oc=AdhdAHUXpIiZaFJVyJEDEg6SQv9eZ9UgQhGUXkFX2-RZ_0dLbZYFerScn3ZM7a2AK3U&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=EbvYHLgQQUj8eFwB1Mj4rw&oh=00_AYGKDlKGZT_toT25CtSwHNgzwAVqxxE7UPTFPHPWHyHKEg&oe=67DF1B13" alt="Logo" width="30" height="30" class="me-2">Janeth's Preloved Collection</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+					<li class="nav-item"><a class="nav-link" href="FinalsHomeD.html">Home</a></li>
+					<li class="nav-item"><a class="nav-link" href="FinalsShopD.html">Shop</a></li>
+					<li class="nav-item"><a class="nav-link" href="FinalsOrderD.html">Check Out</a></li>
+					<li class="nav-item"><a class="nav-link" href="FinalsAboutUsD.html">About Us</a></li>
+                </ul>
+                <i class="fas fa-shopping-basket cart-icon ms-3" onclick="toggleCart()"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Catalog -->
+    <div class="container">
+        <h2 class="text-center">Women's Month Sale ♡</h2>
+		<br>
+        <div class="product-grid">
+            <div class="product" onclick="showPopup('LV Speedy Bandoulière 25', 'Signature Monogram Canvas', '8000' , 'https://scontent.fmnl17-2.fna.fbcdn.net/v/t39.30808-6/484318486_677302531543521_7013254548118483998_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_ohc=dVq1xKmmQ3kQ7kNvgH0pEiY&_nc_oc=Adm4OLL2sZJhoECLeF3tlVKakopmrpN4mklig2P9qXegdASATNmzkif4vGNhmPfUv4M&_nc_zt=23&_nc_ht=scontent.fmnl17-2.fna&_nc_gid=mSXoCiKMmU1z3EqddX2Prw&oh=00_AYHLghLJoVMNJcI4MyQxZOcCPZdUQUPDiRRHUHaZRTyeTw&oe=67E06873')">
+                <img src="https://scontent.fmnl17-2.fna.fbcdn.net/v/t39.30808-6/484318486_677302531543521_7013254548118483998_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=f727a1&_nc_ohc=dVq1xKmmQ3kQ7kNvgH0pEiY&_nc_oc=Adm4OLL2sZJhoECLeF3tlVKakopmrpN4mklig2P9qXegdASATNmzkif4vGNhmPfUv4M&_nc_zt=23&_nc_ht=scontent.fmnl17-2.fna&_nc_gid=mSXoCiKMmU1z3EqddX2Prw&oh=00_AYHLghLJoVMNJcI4MyQxZOcCPZdUQUPDiRRHUHaZRTyeTw&oe=67E06873" alt="YSL Bag">
+                <p>LV Speedy Bandoulière 25</p>
+				<p class="original-price"><s>₱ 10,000</s></p>
+				<p class="discounted-price">₱ 8,000</p>
+            </div>
+			<div class="product" onclick="showPopup('LV Favorite MM', 'Damien Azure', '7000' , 'https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/481196154_663452226261885_8346079759045439839_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=bXhThz66eDAQ7kNvgG2Jjob&_nc_oc=Adk_31tkQgWtI-04opfPSfL7i1cLNebPaJ3yIMSpD5c-XQGdmAD69FUrZrkJkRZku9Y&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=Pa70uiL6dTB28i9Jz3n3Og&oh=00_AYEGsH1ZACiyuM0bAy3H4G7M_mXYtwSDlWEW80inLIDiEg&oe=67E05FC5')">
+                <img src="https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/481196154_663452226261885_8346079759045439839_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=bXhThz66eDAQ7kNvgG2Jjob&_nc_oc=Adk_31tkQgWtI-04opfPSfL7i1cLNebPaJ3yIMSpD5c-XQGdmAD69FUrZrkJkRZku9Y&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=Pa70uiL6dTB28i9Jz3n3Og&oh=00_AYEGsH1ZACiyuM0bAy3H4G7M_mXYtwSDlWEW80inLIDiEg&oe=67E05FC5" alt="YSL Bag">
+                <p>LV Favorite MM</p>
+				<p><s>₱ 7,800</s></p>
+				<p class="discounted-price">₱ 7,000</p>
+            </div>
+			 <div class="product" onclick="showPopup('COACH Small Town', 'Floral', '5500' , 'https://scontent.fmnl17-2.fna.fbcdn.net/v/t39.30808-6/477774525_655796513694123_2233750018752990604_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=c8K3QtijUB0Q7kNvgGuXJPb&_nc_oc=AdmVotfZYIicBjPQzDhOg1R4KWNFcaE7Lu15CQZVS9n0gS6sx3prduplMiNTj0XqTpY&_nc_zt=23&_nc_ht=scontent.fmnl17-2.fna&_nc_gid=SiBgeLHYL1lsZJ9duCKgnA&oh=00_AYEIReiXG53lxFay4GJ9oL3ZcRmCo6Yfe6d_a-FGwRzBwQ&oe=67E07A82')">
+                <img src="https://scontent.fmnl17-2.fna.fbcdn.net/v/t39.30808-6/477774525_655796513694123_2233750018752990604_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=833d8c&_nc_ohc=c8K3QtijUB0Q7kNvgGuXJPb&_nc_oc=AdmVotfZYIicBjPQzDhOg1R4KWNFcaE7Lu15CQZVS9n0gS6sx3prduplMiNTj0XqTpY&_nc_zt=23&_nc_ht=scontent.fmnl17-2.fna&_nc_gid=SiBgeLHYL1lsZJ9duCKgnA&oh=00_AYEIReiXG53lxFay4GJ9oL3ZcRmCo6Yfe6d_a-FGwRzBwQ&oe=67E07A82" alt="YSL Bag">
+				<p>COACH Small Town</p>
+				<p class="original-price"><s>₱ 6,000</s></p>
+				<p>₱ 5,500</p>				
+            </div>
+			<div class="product" onclick="showPopup('GUCCI Boston', 'Brown Leather', '10000' , 'https://scontent.fmnl17-8.fna.fbcdn.net/v/t39.30808-6/484066043_676552608285180_2243404352598205715_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=a9HIYbW_VloQ7kNvgEPhY8q&_nc_oc=AdlnmC5NYbnR5i9KjdrcckT_ayQkXzNHxoUNANwU0UI6ToRpjA49eF1zuUnhc7ReH00&_nc_zt=23&_nc_ht=scontent.fmnl17-8.fna&_nc_gid=g1YBadPHvbrAQz1w3ZJlmQ&oh=00_AYHfupL_ODiTc4cgLoNgxqLpsioVZXdAUgUnj5s1ZBUi5Q&oe=67E08DFB')">
+                <img src="https://scontent.fmnl17-8.fna.fbcdn.net/v/t39.30808-6/484066043_676552608285180_2243404352598205715_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=a9HIYbW_VloQ7kNvgEPhY8q&_nc_oc=AdlnmC5NYbnR5i9KjdrcckT_ayQkXzNHxoUNANwU0UI6ToRpjA49eF1zuUnhc7ReH00&_nc_zt=23&_nc_ht=scontent.fmnl17-8.fna&_nc_gid=g1YBadPHvbrAQz1w3ZJlmQ&oh=00_AYHfupL_ODiTc4cgLoNgxqLpsioVZXdAUgUnj5s1ZBUi5Q&oe=67E08DFB" alt="YSL Bag">
+                <p>GUCCI Boston</p>
+				<p class="original-price"><s>₱ 12,000</s></p>
+				<p class="discounted-price">₱ 10,000</p>
+            </div>			
+        </div>
+    </div>
+	
+	<br>
+	
+    <div class="container">
+        <h2 class="text-center">New Arrivals</h2>
+        <br>
+        <div class="product-grid">
+                    <!-- Product 1 -->
+                        <div class="product">
+                            <img src="https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/484779694_676957021578072_3077717276886439109_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=zo7X_2rdUYEQ7kNvgE0TDcC&_nc_oc=AdilEZG78sNxLD1P05AW2SZ6UupQ0-o0FOgxyGlVXgpC7p2YXK3JT_UFKYZ9l4niRh8&_nc_zt=23&_nc_ht=scontent.fmnl17-6.fna&_nc_gid=AvWfGT_LaxhTDG-HOF2PuOq&oh=00_AYEKONtfD2S1aBu-J1aWP69PjLOM0saAXOOGcblf5RFhHw&oe=67DA29F9" alt="YSL LE 35 Bucket Bag">
+                            <p>YSL LE 35 Bucket Bag</p>
+                            <p class="discounted-price">₱ 8,500</p>
+                            <button class="btn-add-to-cart" onclick="addToCartDirect('YSL LE 35 Bucket Bag', '', '8500', 'https://scontent.fmnl17-6.fna.fbcdn.net/v/t39.30808-6/484779694_676957021578072_3077717276886439109_n.jpg')">
+                                Add to Cart
+                            </button>
+                        </div>
+                    <!-- Product 2 -->
+                        <div class="product">
+                            <img src="https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/484075186_676955911578183_3780460574700825420_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=833d8c&_nc_ohc=-ATe24Sim_8Q7kNvgGzMvMl&_nc_oc=Adgmm2GPtyOFH7j5_Sb-bfWRwwsNvyZbHv0FAtiP4aWW-a70ZonbNjE_mzHDfC4ZXkM&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=Im4zdINQmyQcyVdcyMIjYg&oh=00_AYHs2RYQOUqW8L4TZx_NnCthEEkkn9WV2Sx64DyxKvsEow&oe=67DEEAB1" alt="Chanel Vanity Bag">
+                            <p>Chanel Vanity Bag</p>
+                            <p class="discounted-price">₱ 6,000</p>
+                            <button class="btn-add-to-cart" onclick="addToCartDirect('Chanel Vanity Bag', '', '6000', 'https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/484075186_676955911578183_3780460574700825420_n.jpg')">
+                                Add to Cart
+                            </button>
+                    </div>
+                    <!-- Product 3 -->
+                        <div class="product">
+                            <img src="https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/484509244_678111321462642_5298603625417859544_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=f727a1&_nc_ohc=f1S2KzPXHq0Q7kNvgFetDIV&_nc_oc=AdinDPwNslPYYXy0PKhC0yFLyL48pdY2bJMC-y0H_OGJI6xRITQCdff_qUvw5zhUlXw&_nc_zt=23&_nc_ht=scontent.fmnl17-3.fna&_nc_gid=iQmJ8UqDJmRQVtFtW5fMqw&oh=00_AYF1d53pkZYDgpg4UQpQaXkLuplcUg6S1lB84h8aDTSmCQ&oe=67DEE1F5" alt="Lady Dior">
+                            <p>Lady Dior</p>
+                            <p class="discounted-price">₱ 8,500</p>
+                            <button class="btn-add-to-cart" onclick="addToCartDirect('Lady Dior', '', '8500', 'https://scontent.fmnl17-3.fna.fbcdn.net/v/t39.30808-6/484509244_678111321462642_5298603625417859544_n.jpg')">
+                                Add to Cart
+                            </button>
+                        </div>
+
+                </div>			
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<br>
+
+    <div class="container">
+        <h2 class="text-center">Available</h2>
+		<br>
+	        <div class="product-grid">
+            <div class="product">		
+			<img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/483929126_677302804876827_1931594685477215319_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=f727a1&_nc_ohc=HpG1ZWZ6ZBoQ7kNvgF1FgPy&_nc_oc=AdkdXdzmfzLHUliAOM_NgjyH6GqJwj95gCsYdU0qCfFl50NJp9HyAYwLvqY0XEZcg2M&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=86aPEsz8RiNb37PCQy04Ww&oh=00_AYHIIimTkDIW1mSQdQ4HAyQjjnLwDsAFRbyazQKcyILSnQ&oe=67E3362A" alt="YSL Bag">
+				<p>GOYARD Saint Louis</p>
+				<p>₱ 10,500</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('GOYARD Saint Louis', '', '10500', 'https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/483929126_677302804876827_1931594685477215319_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=f727a1&_nc_ohc=HpG1ZWZ6ZBoQ7kNvgF1FgPy&_nc_oc=AdkdXdzmfzLHUliAOM_NgjyH6GqJwj95gCsYdU0qCfFl50NJp9HyAYwLvqY0XEZcg2M&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=86aPEsz8RiNb37PCQy04Ww&oh=00_AYHIIimTkDIW1mSQdQ4HAyQjjnLwDsAFRbyazQKcyILSnQ&oe=67E3362A')">
+                Add to Cart
+            </button>
+
+            </div>
+			
+            <div class="product">		
+			<img src="https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/484233767_676955888244852_6657032239184656667_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=m_445UOgxhIQ7kNvgFOxlpV&_nc_oc=AdnOI2wTjeK5sjpeJJe8OnwinOesa-GCcyJIxSPt2Kc9fpP9hjrjzGJEpNNVrWFavek&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=mKGoRfAFF2JAwwBnpSGQcA&oh=00_AYELTvu_H2dtRUOQFPH1cqtyRRf-fjZucaAxS7a-XMKIlQ&oe=67E322B5" alt="YSL Bag">
+                <p>GIVENCHY Antigona</p>
+				<p class="discounted-price">₱ 9,000</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('GIVENCHY Antigona', '', '9000', 'https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/484233767_676955888244852_6657032239184656667_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=m_445UOgxhIQ7kNvgFOxlpV&_nc_oc=AdnOI2wTjeK5sjpeJJe8OnwinOesa-GCcyJIxSPt2Kc9fpP9hjrjzGJEpNNVrWFavek&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=mKGoRfAFF2JAwwBnpSGQcA&oh=00_AYELTvu_H2dtRUOQFPH1cqtyRRf-fjZucaAxS7a-XMKIlQ&oe=67E322B5')">
+                Add to Cart
+            </button>
+				</div>
+				
+            <div class="product">		
+			<img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/484344125_676955644911543_5333748083034949813_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=318hnbeZC0MQ7kNvgFXrp_X&_nc_oc=AdnAmIvDub3FkTFA7FPGfDejm5aZ2lwJx-z8i6Lt9AlIj4KcRzzkYiEzbx_-a0smi6U&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=jvvLFyi6NzG6rXxMakGIUg&oh=00_AYFLHGiDMr3LVyEgE1embUytL5Zc3jLDGpL9793ch0qyrg&oe=67E33714" alt="YSL Bag">
+                <p>Lady Dior</p>
+				<p class="discounted-price">₱ 7,800</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('Lady Dior', '', '9000', 'https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/484344125_676955644911543_5333748083034949813_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=833d8c&_nc_ohc=318hnbeZC0MQ7kNvgFXrp_X&_nc_oc=AdnAmIvDub3FkTFA7FPGfDejm5aZ2lwJx-z8i6Lt9AlIj4KcRzzkYiEzbx_-a0smi6U&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=jvvLFyi6NzG6rXxMakGIUg&oh=00_AYFLHGiDMr3LVyEgE1embUytL5Zc3jLDGpL9793ch0qyrg&oe=67E33714')">
+                Add to Cart
+            </button>
+				</div>
+				
+            <div class="product">		
+			<img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/483862363_674934051780369_2894905419059991741_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=f727a1&_nc_ohc=G2dZEaeDDf0Q7kNvgEjkU0z&_nc_oc=AdkkuIf-eBm9wgtudGZeKnEKD-7NLfsP_6tY0zlElPHJO2iqi2LyNt52BYSGwze02bE&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=db3ftCNhfS1iUl-YA3hc1g&oh=00_AYErkLEEJxUkSGuaRNuSfiJGlS-YwDn0mkuGJC5lcmrl_g&oe=67E34DDE" alt="YSL Bag">
+                <p>FENDI Peekaboo</p>
+				<p class="discounted-price">₱ 9,800</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('FENDI Peekaboo', '', '9800', 'https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/483862363_674934051780369_2894905419059991741_n.jpg?_nc_cat=102&ccb=1-7&_nc_sid=f727a1&_nc_ohc=G2dZEaeDDf0Q7kNvgEjkU0z&_nc_oc=AdkkuIf-eBm9wgtudGZeKnEKD-7NLfsP_6tY0zlElPHJO2iqi2LyNt52BYSGwze02bE&_nc_zt=23&_nc_ht=scontent.fmnl17-5.fna&_nc_gid=db3ftCNhfS1iUl-YA3hc1g&oh=00_AYErkLEEJxUkSGuaRNuSfiJGlS-YwDn0mkuGJC5lcmrl_g&oe=67E34DDE')">
+                Add to Cart
+            </button>
+				</div>
+				
+				
+            <div class="product">		
+			<img src="https://scontent.fmnl17-1.fna.fbcdn.net/v/t39.30808-6/485032903_677302761543498_9220424795684444581_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=f727a1&_nc_ohc=Sf5BOL3pY44Q7kNvgHYQEzE&_nc_oc=AdmpSg-IO7ilt8xlPV4rhpQVMR8sMnV_okqsIfaj6GOEi8xgKoYrM66PH7O2s0ss2Ko&_nc_zt=23&_nc_ht=scontent.fmnl17-1.fna&_nc_gid=O8EV3IFIxNMNiMk7K3CeJw&oh=00_AYGxdaO74NJIZy99tMv44vJ0nORyT6uGRJ0LJ_DkD77MGA&oe=67E3220C" alt="YSL Bag">
+                <p>LV Pochette</p>
+				<p class="discounted-price">₱ 5,800</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('LV Pochette', '', '5800', 'https://scontent.fmnl17-1.fna.fbcdn.net/v/t39.30808-6/485032903_677302761543498_9220424795684444581_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=f727a1&_nc_ohc=Sf5BOL3pY44Q7kNvgHYQEzE&_nc_oc=AdmpSg-IO7ilt8xlPV4rhpQVMR8sMnV_okqsIfaj6GOEi8xgKoYrM66PH7O2s0ss2Ko&_nc_zt=23&_nc_ht=scontent.fmnl17-1.fna&_nc_gid=O8EV3IFIxNMNiMk7K3CeJw&oh=00_AYGxdaO74NJIZy99tMv44vJ0nORyT6uGRJ0LJ_DkD77MGA&oe=67E3220C')">
+                Add to Cart
+            </button>
+				</div>
+				
+            <div class="product">		
+			<img src="https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/477785058_655796497027458_8245443486815493864_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=eozovOhftbIQ7kNvgGrbrBI&_nc_oc=Adnr_xrdheB5WoRQZWlaq8p2nLZC0aadUNfKE3mK8HgEtk8xSlt-MIJD-snL0RGP2Fo&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=54PZwz-bgcVxEjVb4rtaHw&oh=00_AYHW-aRr-YCEBKlQA-1-XDPAHRi2gzEeIzvmIMb6ANoCGA&oe=67E33E07" alt="YSL Bag">
+                <p>HERMES Kelly</p>
+				<p class="discounted-price">₱ 9,800</p>
+				<button class="btn-add-to-cart" onclick="addToCartDirect('HERMES Kelly', '', '9800', 'https://scontent.fmnl17-4.fna.fbcdn.net/v/t39.30808-6/477785058_655796497027458_8245443486815493864_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=eozovOhftbIQ7kNvgGrbrBI&_nc_oc=Adnr_xrdheB5WoRQZWlaq8p2nLZC0aadUNfKE3mK8HgEtk8xSlt-MIJD-snL0RGP2Fo&_nc_zt=23&_nc_ht=scontent.fmnl17-4.fna&_nc_gid=54PZwz-bgcVxEjVb4rtaHw&oh=00_AYHW-aRr-YCEBKlQA-1-XDPAHRi2gzEeIzvmIMb6ANoCGA&oe=67E33E07')">
+                Add to Cart
+            </button>
+				</div>		
+		
+            </div>	
+            </div>			
+			
+        </div>
+    </div>
+</div>	
+	
+<br>
+<br>
+
+
+    <!-- Pop-up Modal -->
+    <div id="productPopup" class="popup-overlay">
+        <div class="popup-content">
+            <span class="close-btn" onclick="closePopup()">&times;</span>
+            <img id="popupImage" src="" alt="Product Image">
+            <h3 id="popupTitle"></h3>
+            <p id="popupDescription"></p>
+			<p id="popupPrice"></p>
+			<button class="btn-add-to-cart" onclick="addToCart()">Add to Cart</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Janeth's Preloved Collection. All Rights Reserved.</p>
+    </footer>
+
+<script>
+    let selectedProduct = null; // Declare globally to store selected product
+
+    function showPopup(title, description, price, image) {
+        console.log("Product selected:", title, price); // Debugging log
+
+        document.getElementById("popupTitle").innerText = title;
+        document.getElementById("popupDescription").innerText = description;
+        document.getElementById("popupPrice").innerText = price;
+        document.getElementById("popupImage").src = image;
+
+        // Update selected product properly
+        selectedProduct = { title, description, price, image };
+        document.getElementById("productPopup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("productPopup").style.display = "none";
+    }
+
+    function addToCart() {
+        if (!selectedProduct) {
+            console.error("No product selected to add to cart.");
+            return;
+        }
+
+        console.log("Adding to cart:", selectedProduct.title);
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(selectedProduct);
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        showCartNotification(selectedProduct.title + " has been added to your cart!");
+
+        console.log("Cart Updated:", cart);
+    }
+
+    function showCartNotification(message) {
+        let notification = document.createElement("div");
+        notification.classList.add("cart-notification");
+        notification.innerText = message;
+
+        document.body.appendChild(notification);
+        notification.style.display = "block";
+
+        setTimeout(() => {
+            notification.style.display = "none";
+            notification.remove();
+        }, 3000);
+    }
+	
+	    function addToCartDirect(title, description, price, image) {
+        console.log("Adding to cart:", title);
+
+        let product = { title, description, price, image };
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(product);
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        showCartNotification(title + " has been added to your cart!");
+        console.log("Cart Updated:", cart);
+    }
+
+</script>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
